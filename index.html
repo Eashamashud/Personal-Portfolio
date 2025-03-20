@@ -1,0 +1,354 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mediaqueries.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5b8315a66b.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+
+</head>
+<body>
+<div id="header">
+    <div class="container">
+        <nav>
+           <ul id="sidemenu">
+              <li><a href="#header">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <!-- <li><a href="#services">Services</a></li> -->
+              <li><a href="#portfolio">Portfolio</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <i class="fas fa-times" onClick="closemenu()"></i>
+           </ul>
+           <i class="fa-solid fa-bars" onClick="openmenu()"></i>
+        </nav>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/eashamashud/"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://github.com/Eashamashud"><i class="fa-brands fa-github"></i></a>
+            <a href="mailto:eashamashud@gmail.com" class="email-btn">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+        </div>
+        <div class="header-text">
+            <h1><span id="typing-text"></span><span id="cursor">|</span></h1>
+            <p>Student at the University of Albany</p>
+            <p class="small-text" style="font-size: 20px;">I'm captivated by the dynamic nature of the technology industry, 
+            <br>where constant evolution is not just a trend but a defining characteristic.</p>
+        </div>
+    </div>
+
+</div>
+<div id="diamond-container"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // 1️⃣ Set up the Scene, Camera, and Renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+
+const container = document.getElementById("diamond-container");
+container.appendChild(renderer.domElement);
+
+// Function to correctly set size
+function setRendererSize() {
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+}
+
+// Set initial size on load
+setRendererSize();
+
+// Adjust size on window resize
+window.addEventListener("resize", setRendererSize);
+
+
+
+    // 2️⃣ Create the Diamond Shape
+    // const geometry = new THREE.OctahedronGeometry(3); // Octahedron looks like a diamond
+    function getDiamondSize() {
+    if (window.innerWidth > 1440) {
+        return 7;  // Large screens
+    } else if (window.innerWidth > 1024) {
+        return 5;  // Laptops
+    } else if (window.innerWidth > 768) {
+        return 4;  // Tablets
+    } else {
+        return 3;  // Mobile
+    }
+}
+
+const geometry = new THREE.OctahedronGeometry(5); // Set dynamic size
+
+    const material = new THREE.MeshStandardMaterial({ 
+    color: 0x0FFF2, 
+    metalness: 0.8, 
+    roughness: 0.2 
+    });
+
+    const diamond = new THREE.Mesh(geometry, material);
+    scene.add(diamond);
+
+
+    
+    // 💡 Main Point Light
+    const mainLight = new THREE.PointLight(0xffffff, 3, 100);
+    mainLight.position.set(6, 6, 6);
+    scene.add(mainLight);
+
+    //💡 Add Extra Lights from Different Angles
+    const light1 = new THREE.PointLight(0xffffff, 2, 100);
+    light1.position.set(-6, 6, 6);
+    scene.add(light1);
+
+    const light2 = new THREE.PointLight(0xffffff, 2, 100);
+    light2.position.set(6, -6, 6);
+    scene.add(light2);
+
+    const light3 = new THREE.PointLight(0xffffff, 2, 100);
+    light3.position.set(6, 6, -6);
+    scene.add(light3);
+
+   
+
+    // 4️⃣ Position the Camera
+    camera.position.set(0, -1, 10);
+
+
+    // 5️⃣ Animate the Diamond (Rotate)
+    function animate() {
+        requestAnimationFrame(animate);
+        diamond.rotation.y += 0.009;
+        diamond.rotation.x += 0.009;
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+
+   
+    // 🌟 Resize Diamond on Window Resize
+    window.addEventListener("resize", function () {
+        const container = document.getElementById("diamond-container");
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+    });
+
+    // 🌟 Adjust Diamond Position on Header Height Change
+    const header = document.querySelector("#header");
+    //const diamond = document.querySelector("#diamond-container");
+
+    function adjustDiamondPosition() {
+        let newTop = header.clientHeight + 60; // Adjust this value if needed
+        diamond.style.top = `${newTop}px`;
+    }
+
+    // Initial adjustment
+    adjustDiamondPosition();
+
+    // Adjust on header height change (e.g., window resize)
+    window.addEventListener("resize", adjustDiamondPosition);
+});
+
+</script>
+<!-- -----------------about------------------ -->
+
+<div id="about">
+    <div class="container">
+        <div class="row">
+            <div class="about-col-1">
+                <img src="images/IMG_5408 copy.jpg">
+            </div>
+            <div class="about-col-2">
+                <h1 class="sub-title">About Me</h1>
+                <p>I’m a junior at the University at Albany majoring in Computer Science, driven by a passion for building impactful solutions that enhance human life. I thrive on solving complex problems and continuously expanding my skill set in software development.
+
+                </br>
+                Beyond academics, I enjoy strength training, reading, and exploring knowledge across various fields. I’m always eager to learn, innovate, and take on challenges that push my limits. Whether it’s coding, fitness, or discovering new perspectives, I believe in lifelong growth and making meaningful contributions to the world..</p>
+                
+                <div class="tab-titles">
+                    <p class="tab-links active-link" onClick="opentab('skills')">Skills</p>
+                    <p class="tab-links" onClick="opentab('experience')">Experience</p>
+                    <p class="tab-links" onClick="opentab('education')">Education</p>
+                </div>
+                <div class="tab-contents active-tab" id="skills">
+                    <ul>
+                        <li><span>Programming Skills</span><br>Java, Python, HTML/CSS, Javascript, C</li>
+                        <li><span>Web Technologies</span><br>React.js, Next.js, Node.js, Express.js, Three.js MongoDB, SQL</li>
+                        <li><span>Tools</span><br> Git, Github, Postman, IntelliJ, Eclipse, UTM, Replit, Visual Studio Code, Java Spring Boot, Jupyter Notebooks</li>
+                        <li><span>Foreign Languages:</span><br>Fluent English, Bengali, Hindi</li>
+                    </ul>
+                </div>
+                <div class="tab-contents" id="experience">
+                    <ul>
+                        <li><span>Headstarter AI</span><br>Software Engineer Fellow</li>
+                        <li><span>Mathnasium</span><br>Math Tutor</li>
+                    </ul>
+                </div>
+                <div class="tab-contents" id="education">
+                    <ul>
+                        <li><span>University at Albany</span><br>B.S in Computer Science</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var tablinks = document.getElementsByClassName("tab-links");
+    var tabcontents = document.getElementsByClassName("tab-contents");
+    function opentab(tabname){
+        for(tablink of tablinks){
+            tablink.classList.remove("active-link");
+        }
+        for(tabcontent of tabcontents){
+            tabcontent.classList.remove("active-tab");
+        }
+
+        
+        event.currentTarget.classList.add("active-link");
+        document.getElementById(tabname).classList.add("active-tab");
+    }
+
+</script>
+<div id="portfolio">
+    <div class="container">
+        <h1 class="sub-title">
+            My Work
+        </h1>
+        <div class="work-list">
+            <div class="work">
+                <img src="images/walkator-klMii3cR9iI-unsplash.jpg">
+                <div class="layer">
+                    <h3>Basic Language Interpreter</h3>
+                    <p>Developed a custom parser for a BASIC-like programming language that processes variable assignments, mathematical expressions, and control flow statements (IF, PRINT, INPUT).
+                    </p>
+                    <a href="https://github.com/Eashamashud/BASIC-Language-Parser"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class="work">
+                <img src="images/Screenshot 2025-03-09 at 9.28.08 PM.png">
+                <div class="layer">
+                    <h3>Fitness Tracker App</h3>
+                    <p>Developed a RESTful API using Spring Boot to provide CRUD( Create, Read, Update, Delete) operations for
+                        managing fitness activities.
+                    </p>
+                    <p>Implemented functionalities for retrieving all fitness activities, and accessing specific activities by ID, to enhance
+                    user experience and data management system.</p>
+                    <a href="https://github.com/Eashamashud/Fitness-Activity"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class="work">
+                <img src="images/Screenshot 2025-03-09 at 10.31.55 PM.png">
+                <div class="layer">
+                    <h3>Data Analysis of Electric Vehicle Stations</h3>
+                    <p>Utilized Jupyter Notebook, Python programming language, and Pandas data analysis to process and analyze a
+                        dataset of alternate fuel stations, focusing on electric vehicle charging stations.
+                    </p>
+                    <p>Conducted data exploration, and statistical analysis to derive insights of trends in the adoption and usage of EV
+                        infrastructure.</p>
+                    <a href="https://github.com/Eashamashud/ElectricVehicle"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+        </div>
+        <a href="https://github.com/Eashamashud" class="btn">See more</a>
+    </div>
+</div>
+<!-----------------contact------------------>
+
+<div id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="contact-left">
+                <h1 class="sub-title">Contact Me</h1>
+                <p><i class="fa-solid fa-paper-plane"></i>eashamashud@gmail.com</p>
+                <p><i class="fa-solid fa-phone"></i>(518) 375-0321</p>
+                <!-- <div class="social-icons">
+                    <a href="https://www.linkedin.com/in/eashamashud/"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com/Eashamashud"><i class="fa-brands fa-github"></i></a>
+                </div> -->
+                <a href="images/Easha Mashud Resume.pdf" download class="btn btn2">Download Resume</a>
+            </div>
+            <div class="contact-right">
+                <form name="submit-to-google-sheet">
+                    <input type="text" name="Name" placeholder="Your Name" required>
+                    <input type="email" name="Email" placeholder="Your Email" required>
+                    <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
+                    <button type="submit" class="btn btn2">Submit</button>
+                </form>
+                <span id="msg"></span>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>Built and designed by Easha Mashud.
+            All rights reserved. ©</p>
+    </div>
+</div>
+
+
+
+<script>
+    var sidemenu = document.getElementById("sidemenu");
+
+    function openmenu(){
+        sidemenu.style.right = "0"
+    }
+    function closemenu(){
+        sidemenu.style.right = "-200px";
+    }
+</script>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyoBDEC46vWfNrVyDscVGz5vjzzZq232fufOf6bSSgNm719SfpRKDHrvhktL22oEqJR/exec'
+    const form = document.forms['submit-to-google-sheet']
+    const msg = document.getElementById("msg")
+  
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+            msg.innerHTML = "Message sent successfully"
+            setTimeout(function(){
+                msg.innerHTML = ""
+            }, 5000)
+            form.reset()
+        })
+        .catch(error => console.error('Error!', error.message))
+    })
+  </script>
+
+<!-- ---------------typewriter effect--------------- -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const text = "Hi, I'm Easha :) ";
+    let index = 0;
+    const speed = 100; // Typing speed in milliseconds
+    const target = document.getElementById("typing-text");
+    const cursor = document.getElementById("cursor");
+
+    function typeWriter() {
+        if (index < text.length) {
+            target.innerHTML += text.charAt(index);
+            index++;
+            setTimeout(typeWriter, speed);
+        } else{
+            cursor.classList.add("blink");
+        }
+    }
+
+    typeWriter();
+});
+
+</script>
+
+</body>
+</html> 
